@@ -64,7 +64,7 @@ search.addEventListener('click',()=>{
                     image.src = './snow.png';
                     break;
     
-                case 'Cloud':
+                case 'Clouds':
                     image.src = './cloud.png';
                     break;
     
@@ -83,7 +83,7 @@ search.addEventListener('click',()=>{
             temperature.innerHTML = `${parseInt(json.main.temp)}<span>°C</span>`;
             description.innerHTML = `${json.weather[0].description}`;
             humidity.innerHTML = `${json.main.humidity}%`;
-            wind.innerHTML = `${parseInt(json.wind.speed)}Km/h`;
+            wind.innerHTML = `${parseInt(json.wind.speed)} Km/h`;
 
 
             const infoWeather = document.querySelector('.info-weather');
@@ -110,14 +110,14 @@ search.addEventListener('click',()=>{
             }, 2200);
         
 
-            const cloneInfoWeather = document.querySelectorAll('.info-weather, active-clone');
+            const cloneInfoWeather = document.querySelectorAll('.info-weather.active-clone');
             const totalCloneInfoWeather = cloneInfoWeather.length;
             const cloneInfoWeatherFirst = cloneInfoWeather[0];
 
-            const cloneInfoHumidity = document.querySelectorAll('.info-humidity, active-clone');
+            const cloneInfoHumidity =                                               document.querySelectorAll('.info-humidity.active-clone');
             const cloneInfoHumidityFirst = cloneInfoHumidity[0];
 
-            const cloneInfoWind = document.querySelectorAll('.info-wind, active-clone');
+            const cloneInfoWind = document.querySelectorAll('.info-wind.active-clone');
             const cloneInfoWindFirst = cloneInfoWind[0];
 
             if(totalCloneInfoWeather > 0 ){
