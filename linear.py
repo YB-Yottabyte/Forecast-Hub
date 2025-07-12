@@ -72,3 +72,41 @@ if __name__ == "__main__":
     m = 13
     ht = LinearProbingHashTable(initial_table, m)
     ht.search(10)
+
+
+
+class LinearProbingHashTable:
+    def __init__(self, size):
+        self.size = size
+        self.table = [None] * size
+
+    def _hash(self, key):
+        return key % self.size
+
+    def insert(self, key):
+        for i in range(self.size):
+            idx = (self._hash(key) + i) % self.size
+            if self.table[idx] is None or self.table[idx] == "DELETED":
+                self.table[idx] = key
+                return
+        print("Hash Table is full")
+
+    def search(self, key):
+        for i in range(self.size):
+            idx = (self._hash(key) + i) % self.size
+            if self.table[idx] is None:
+                return False
+            if self.table[idx] == key:
+                return True
+        return False
+
+    def delete(self, key):
+        for i in range(self.size):
+            idx = (self._hash(key) + i) % self.size
+            if self.table[idx] == key:
+                self.table[idx] = "DELETED"
+                return
+        print("Key not found")
+
+    def display(self):
+        print(self.table)
