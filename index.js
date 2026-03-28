@@ -9,15 +9,16 @@ const cityHide = document.querySelector('.city-hide');
 
 
 
-search.addEventListener('click',()=>{
-    
+search.addEventListener('click', async () => {
     const APIKey = '1873bee1ab6e698bc142fb2c312c213c';
     const city = document.querySelector('.search-box input').value;
 
-    if (city=='')
-        return;
+    if (city == '') return;
 
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`).then(response => response.json()).then(json => {
+    // Fetch current weather (OpenWeatherMap)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${APIKey}`)
+        .then(response => response.json())
+        .then(async json => {
 
         if(json.cod == '404'){
             cityHide.textContent = city;
@@ -133,11 +134,36 @@ search.addEventListener('click',()=>{
             }
 
 
-        }        
+        }
 
+        // NOAA 7-day forecast integration
+        // Step 1: Get coordinates from OpenWeatherMap response
+        const lat = json.coord.lat;
+        const lon = json.coord.lon;
+        // Step 2: Fetch NOAA gridpoint for those coordinates
+        try {
+            const pointsResp = await fetch(`https://api.weather.gov/points/${lat},${lon}`);
+            const pointsData = await pointsResp.json();
+            const forecastUrl = pointsData.properties.forecast;
+            // Step 3: Fetch the 7-day forecast
+            const forecastResp = await fetch(forecastUrl);
+            const forecastData = await forecastResp.json();
+            const periods = forecastData.properties.periods;
+            // Step 4: Render forecast
+            const forecastDiv = document.querySelector('.forecast');
+            if (forecastDiv) {
+                forecastDiv.innerHTML = '';
+                periods.slice(0, 7).forEach(period => {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.className = 'forecast-day';
+                    dayDiv.innerHTML = `<strong>${period.name}</strong><br>${period.temperature}°${period.temperatureUnit}<br>${period.shortForecast}`;
+                    forecastDiv.appendChild(dayDiv);
+                });
+            }
+        } catch (e) {
+            const forecastDiv = document.querySelector('.forecast');
+            if (forecastDiv) forecastDiv.innerHTML = '<em>7-day forecast unavailable.</em>';
+        }
     });
-
-
 });
-
 

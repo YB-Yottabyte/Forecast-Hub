@@ -263,6 +263,25 @@
     transform: translateY(0%);
 }
 
+.forecast {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.forecast-day {
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 10px 14px;
+    min-width: 100px;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
 #video-container {
     position: fixed;
     top: 0;
